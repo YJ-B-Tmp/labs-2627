@@ -27,6 +27,21 @@ if (isset($form_data['birthdate'])) {
   $form_data['birthdate'] = date("F d, Y", strtotime($birthdate));
 }
 
+$file = fopen('registrations.csv', 'a');
+
+fputcsv($file, [
+    $form_data['fullname'],
+    $form_data['birthdate'],
+    $form_data['age'],
+    $form_data['contact_number'],
+    $form_data['sex'],
+    $form_data['program'],
+    $form_data['address'],
+    $form_data['email']
+]);
+
+fclose($file);
+
 dump_session();
 
 session_destroy();
