@@ -1,8 +1,10 @@
 <?php
 
-define('CUSTOMERS_FILE_PATH', 'customers-100.csv');
+$start = microtime(true);
 
-function get_hundred_customers_data( $filter_letter )
+define('CUSTOMERS_FILE_PATH', 'customers-100000.csv');
+
+function get_customers_data( $filter_letter )
 {
     $opened_file_handler = fopen(CUSTOMERS_FILE_PATH, 'r');
 
@@ -26,15 +28,17 @@ function get_hundred_customers_data( $filter_letter )
 
     }
 
+    fclose($opened_file_handler);
+
     return [
         'headers' => $headers,
         'data' => $data
     ];
 }
 
-$chosen_letter = $_GET['letter'];
+$chosen_letter = $_GET['letter'] ?? 'A';
 
-$customers = get_hundred_customers_data($chosen_letter);
+$customers = get_customers_data($chosen_letter);
 
 ?>
 <html>
@@ -45,6 +49,12 @@ $customers = get_hundred_customers_data($chosen_letter);
     <link rel="stylesheet" href="https://assets.ubuntu.com/v1/vanilla-framework-version-4.15.0.min.css" />   
 </head>
 <body>
+<?php
+    $end = microtime(true);
+    $total_time = $end - $start;
+?>
+
+<p>Total Time: <?php echo number_format($total_time,5)?> s</p>
 
 <h1>
     Customers (Letter '<?php echo $chosen_letter; ?>')
@@ -57,6 +67,7 @@ $customers = get_hundred_customers_data($chosen_letter);
 <small>
 The dataset is retrieved from this URL <a href="https://www.datablist.com/learn/csv/download-sample-csv-files">https://www.datablist.com/learn/csv/download-sample-csv-files</a>
 </small>
+
 <table aria-label="Customers Dataset">
     <thead>
         <tr>
@@ -83,7 +94,5 @@ The dataset is retrieved from this URL <a href="https://www.datablist.com/learn/
     ?>
     </tbody>
 </table>
-
-
 </body>
 </html>
