@@ -4,15 +4,28 @@ require "helpers/helper-functions.php";
 
 session_start();
 
-$contact_number = $_POST['contact_number'];
-$program = $_POST['program'];
+$email = $_POST['email'];
+# Encrypt the password first before saving it to the Session Variables
+$password = password_hash($_POST["password"], PASSWORD_DEFAULT);
 $agree = $_POST['agree'];
 
-$_SESSION['contact_number'] = $contact_number;
-$_SESSION['program'] = $program;
+$_SESSION['email'] = $email;
+$_SESSION['password'] = $password;
 $_SESSION['agree'] = $agree;
 
 $form_data = $_SESSION;
+
+if (isset($form_data['birthdate'])) {
+  $birthdate = $form_data['birthdate'];
+
+  //calc age
+  $birth = new DateTime($birthdate);
+  $today = new DateTime();
+  $form_data['age'] = $today->diff($birth)->y;
+
+  // format
+  $form_data['birthdate'] = date("F d, Y", strtotime($birthdate));
+}
 
 dump_session();
 
