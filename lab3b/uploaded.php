@@ -16,7 +16,6 @@ if (move_uploaded_file($temporary_file, $uploaded_text_file)) {
     echo 'Failed to upload file';
 }
 
-
 echo '<pre>';
 var_dump($_FILES);
 exit;
