@@ -16,39 +16,6 @@ if (move_uploaded_file($temporary_file, $uploaded_text_file)) {
     echo 'Failed to upload file';
 }
 
-// pdf
-if (isset($_FILES['pdf_file']) && $_FILES['pdf_file']['error'] === UPLOAD_ERR_OK) {
-    $uploaded_pdf_file = $upload_directory . basename($_FILES['pdf_file']['name']);
-    $temporary_pdf = $_FILES['pdf_file']['tmp_name'];
-
-    if (move_uploaded_file($temporary_pdf, $uploaded_pdf_file)) {
-        $pdf_relative_path = $relative_path . basename($_FILES['pdf_file']['name']);
-        ?>
-        <embed src="<?php echo $pdf_relative_path; ?>" type="application/pdf" width="600" height="500">
-        <?php
-    } else {
-        echo 'Failed to upload PDF file';
-    }
-}
-
-// mp3
-if (isset($_FILES['audio_file']) && $_FILES['audio_file']['error'] === UPLOAD_ERR_OK) {
-    $uploaded_audio_file = $upload_directory . basename($_FILES['audio_file']['name']);
-    $temporary_audio = $_FILES['audio_file']['tmp_name'];
-
-    if (move_uploaded_file($temporary_audio, $uploaded_audio_file)) {
-        $audio_relative_path = $relative_path . basename($_FILES['audio_file']['name']);
-        ?>
-        <audio controls>
-            <source src="<?php echo $audio_relative_path; ?>" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
-        <?php
-    } else {
-        echo 'Failed to upload audio file';
-    }
-}
-
 // pls add any image file it should work this tiem
 if (isset($_FILES['image_file']) && $_FILES['image_file']['error'] === UPLOAD_ERR_OK) {
     $uploaded_image_file = $upload_directory . basename($_FILES['image_file']['name']);

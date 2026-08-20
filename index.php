@@ -30,23 +30,7 @@
             <input type="file" name="text_file" accept=".txt" />
           </p>
         </div>
-
-        <!-- pdfs -->
-        <div class="p-card">
-          <h3>PDF File</h3>
-          <p class="p-card__content">
-            <input type="file" name="pdf_file" accept=".pdf" />
-          </p>
-        </div>
-
-        <!-- audio (mp3 only) -->
-        <div class="p-card">
-          <h3>Audio File (mp3 ONLY)</h3>
-          <p class="p-card__content">
-            <input type="file" name="audio_file" accept=".mp3" />
-          </p>
-        </div>
-
+        
         <!-- any img file type-->
         <div class="p-card">
           <h3>Image File</h3>
