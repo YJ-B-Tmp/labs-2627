@@ -40,6 +40,12 @@
           <h3>Audio File (.mp3 ONLY)</h3>
           <p class="p-card__content">
             <input type="file" name="audio_file" accept=".mp3" />
+        
+        <!-- any img file type-->
+        <div class="p-card">
+          <h3>Image File</h3>
+          <p class="p-card__content">
+            <input type="file" name="image_file" accept="image/*" />
           </p>
         </div>
 
