@@ -2,81 +2,75 @@
 
 require "helpers.php";
 
-# from the $_SERVER global variable, check if the HTTP method used is POST, if its not POST, redirect to the index.php page
-# Reference: https://www.php.net/manual/en/reserved.variables.server.php
-
-// Supply the missing code
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: index.php');
+    exit;
 }
 
-// Supply the missing code
 $complete_name = $_POST['complete_name'];
 $email = $_POST['email'];
 $birthdate = $_POST['birthdate'];
 $contact_number = $_POST['contact_number'];
-$agree = $_POST['agree'];
-$answer = $_POST['answer'] ?? null;
-$answers = $_POST['answers'] ?? null;
-if (!is_null($answer)) {
-    $answers .= $answer;
-}
+$agree = $_POST['agree'] ?? '';
 
-$questions = retrieve_questions();
-$current_question = get_current_question($answers);
-$current_question_number = get_current_question_number($answers);
-
-$target = 'quiz.php';
-if ($current_question_number == MAX_QUESTION_NUMBER) {
-    $target = 'result.php';
-}
-
-$options = get_options_for_question_number($current_question_number);
+$questions = retrieve_questions()['questions'];
 ?>
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="color-scheme" content="light">
     <title>IPT10 Laboratory Activity #3A</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
 </head>
 <body>
 <section class="section">
-    <h1 class="title">Question <?php echo $current_question_number; ?> / <?php echo MAX_QUESTION_NUMBER; ?></h1>
-    <h2 class="subtitle">
-        <?php echo $current_question['question']; ?>
-    </h2>
+    <h1 class="title">Quiz</h1>
+    <h2 class="subtitle">Answer all 5 questions below. This page auto-submits in <span id="countdown">60</span> seconds.</h2>
 
-    <!-- Supply the correct HTTP method and target form handler resource -->
+    <form method="POST" action="result.php" id="quiz-form">
+        <input type="hidden" name="complete_name" value="<?php echo htmlspecialchars($complete_name); ?>" />
+        <input type="hidden" name="email" value="<?php echo htmlspecialchars($email); ?>" />
+        <input type="hidden" name="birthdate" value="<?php echo htmlspecialchars($birthdate); ?>" />
+        <input type="hidden" name="contact_number" value="<?php echo htmlspecialchars($contact_number); ?>" />
+        <input type="hidden" name="agree" value="<?php echo htmlspecialchars($agree); ?>" />
 
-    <form method="POST" action="<?php echo $target; ?>">
-        <input type="hidden" name="complete_name" value="<?php echo $complete_name; ?>" />
-        <input type="hidden" name="email" value="<?php echo $email; ?>" />
-        <input type="hidden" name="birthdate" value="<?php echo $birthdate; ?>" />
-        <input type="hidden" name="contact_number" value="<?php echo $contact_number; ?>" />
-        <input type="hidden" name="agree" value="<?php echo $agree; ?>" />
-        <!--
-        <input type="hidden" name="answers" />
-        -->
-
-        <!-- Display the options -->
-        <?php foreach ($answers as $answer): ?>
-        <div class="field">
-            <div class="control">
-                <label class="radio">
-                    <input type="radio"
-                        name="answer"
-                        value="<?php echo $option['key']; ?>" />
-                        <?php echo $option['value']; ?>
-                </label>
+        <?php foreach ($questions as $index => $question): ?>
+        <div class="box">
+            <p class="has-text-weight-semibold mb-3">
+                <?php echo ($index + 1) . '. ' . htmlspecialchars($question['question']); ?>
+            </p>
+            <?php foreach ($question['options'] as $option): ?>
+            <div class="field">
+                <div class="control">
+                    <label class="radio">
+                        <input type="radio"
+                            name="answers[<?php echo $index; ?>]"
+                            value="<?php echo htmlspecialchars($option['key']); ?>" />
+                        <?php echo htmlspecialchars($option['key'] . '. ' . $option['value']); ?>
+                    </label>
+                </div>
             </div>
+            <?php endforeach; ?>
         </div>
         <?php endforeach; ?>
 
-        <!-- Start Quiz button -->
-        <button type="submit" class="button">Submit</button>
+        <button type="submit" class="button is-link">Submit</button>
     </form>
 </section>
 
+<script>
+    let secondsLeft = 60;
+    const countdownEl = document.getElementById('countdown');
+    const quizForm = document.getElementById('quiz-form');
 
+    const timer = setInterval(function () {
+        secondsLeft -= 1;
+        countdownEl.textContent = secondsLeft;
+        if (secondsLeft <= 0) {
+            clearInterval(timer);
+            quizForm.submit();
+        }
+    }, 1000);
+</script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
 
-define('MAX_QUESTION_NUMBER', 50);
+define('MAX_QUESTION_NUMBER', 5);
 
 function retrieve_questions() {
     // 1. Open the questions/triviaquiz.json file
@@ -29,13 +29,12 @@ function get_options_for_question_number($number = 0) {
 }
 
 function compute_score($answers = []) {
-    $questions = retrieve_questions();
-    $correct_answers = $questions['answers'];
+    $correct_answers = get_answers();
 
     $score = 0;
     for ($i = 0; $i < MAX_QUESTION_NUMBER; $i++) {
-        if ($correct_answers[$i] == $answers[$i]) {
-            $score += 100;
+        if (isset($answers[$i]) && $correct_answers[$i] === $answers[$i]) {
+            $score += 1;
         }
     }
     return $score;
@@ -44,4 +43,20 @@ function compute_score($answers = []) {
 function get_answers() {
     $questions = retrieve_questions();
     return $questions['answers'];
+}
+
+//grabbing everything at once
+function full_questions(){
+    $questions = retrieve_questions();
+    return $questions['questions'];
+}
+
+//answer text
+function ans_txt($options, $key){
+    foreach ($options as $option){
+        if ($option['key']===$key){
+            return $option['value'];
+        }
+    }
+    return 'N/A';
 }
