@@ -46,6 +46,10 @@
           <h3>Image File</h3>
           <p class="p-card__content">
             <input type="file" name="image_file" accept="image/*" />
+
+          <h3>Video File (mp4 ONLY)</h3>
+          <p class="p-card__content">
+            <input type="file" name="video_file" accept=".mp4" />
           </p>
         </div>
 
