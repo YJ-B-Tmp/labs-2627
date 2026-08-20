@@ -32,9 +32,14 @@
         </div>
 
         <div class="p-card">
+
           <h3>PDF File</h3>
           <p class="p-card__content">
             <input type="file" name="text_file" accept=".pdf" />
+
+          <h3>Audio File (.mp3 ONLY)</h3>
+          <p class="p-card__content">
+            <input type="file" name="audio_file" accept=".mp3" />
           </p>
         </div>
 
