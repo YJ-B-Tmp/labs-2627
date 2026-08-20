@@ -3,6 +3,11 @@
 $upload_directory = getcwd() . '/uploads/';
 $relative_path = '/uploads/';
 
+//folder checker
+if (!is_dir($upload_directory)) {
+    mkdir($upload_directory, 0755, true);
+}
+
 // Handle Text File
 $uploaded_text_file = $upload_directory . basename($_FILES['text_file']['name']);
 $temporary_file = $_FILES['text_file']['tmp_name'];
